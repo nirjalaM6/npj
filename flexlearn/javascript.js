@@ -1,6 +1,13 @@
 // alert("Hi Nirjala, welcomr to web development");
 console.log("I have reached to 1");
 console.log("I have reached to 2");
-alert("Hi Nirjala, welcomr to web development");
+// alert("Hi Nirjala, welcomr to web development");
 console.log("I have reached to 3");
+
+function sayMyName(n){
+    alert(n)
+}
+sayMyName("Nirjala");
+
+console.log("I have reached to 4");
 
