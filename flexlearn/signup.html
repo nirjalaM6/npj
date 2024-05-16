@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <style>
+            h1{
+                font-weight: 400;
+                color: blue;
+                align-items:center;
+                
+            }
+            .signupBox {
+                border: 5px solid;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                height: 40%;
+                width: 30%;
+                transform: translate(-50%, -50%);
+                padding: 10px;
+                text-align: center;
+                
+            }
+        </style>
+    </head>
+        <body>
+          
+            <div class="signupBox">
+                <h1>Sign Up</h1><br>
+                    <h4><label for="email"> Email: </label>
+                   <input type="text" id="email"> <br><br>
+                   <label for="password"> Password: </label>
+                   <input type="password" id="password"> <br><br>
+                   <input type="submit" value="Sign Up" onclick="onSugnUpButtonClick()"></h4>
+            </div>
+        </body>
+        <script >
+            
+            const onSugnUpButtonClick= async function(){
+              
+                let emailEntered = document.getElementById("email").value;
+                let passwordEntered=document.getElementById("password").value;
+                let response = await fetch ("http://localhost:3333/api/user",{
+                method: "POST",
+                headers:{
+                    'Accept': 'application/json',
+                    "Content-Type":"application/json",
+                },
+                body: JSON.stringify({
+                    email:emailEntered,
+                    password:passwordEntered
+                })       
+               });
+               let body = await response.json()
+               console.log(body);
+            }   
+            
+        </script>
+
+</html>

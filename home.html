@@ -1,0 +1,162 @@
+<html>
+    <head>    
+         <style>
+        #head1{
+          color:red;
+          padding-right: 20px;
+        }  
+        #head2{
+          color:red;
+          padding-left: 20px;
+        }        
+            h1{
+                font-weight: 400;
+                color: blue;
+                align-items:center;
+                
+            }
+            .studentform {
+                border: 5px solid;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                height: 40%;
+                width: 30%;
+                transform: translate(-50%, -50%);
+                padding: 10px;
+                text-align: center;
+                
+            }
+        </style>
+  </head>
+    <body>
+        <h2> Welcome </h2>
+       <input type="button" value="view all student" id="viewButton" onclick="onViewAllStudent()"><br><br>
+       <div id="studentList"></div>
+       <div id="studenttForm"></div>
+       <div id="updateForm"></div>
+       <input type="button" value="Create student" onclick="onCreateStudent()">
+   
+    </body>
+    <script >
+            
+        const onViewAllStudent= async function(){
+            let response = await fetch ("http://localhost:3333/api/student",{
+            method: "GET",   
+           });
+           let body = await response.json()
+           console.log(body);
+           let merohtml='<h1 ><span id="head1">ID </span> <span id="head1">Name </span>    <span id="head2"> Age</span></h1>';
+           
+          for (i=0; i<body.length; i++){
+            merohtml +=`<h1 ><span id="head1">${body[i].id} </span><span id="head1">${body[i].name} </span> <span id="head2"> ${body[i].age } <input type="button" value="Edit" onclick="onEditStudent(${body[i].id})""> <input type="button" value="Delete" onclick="onDeleteStudent(${body[i].id})""></span></h1>`; 
+           }
+           //let merohtml =`<h1 id="head1">${studentName}</h1>`; 
+           let studentDiv = document.getElementById("studentList");
+           studentDiv.innerHTML = merohtml;
+           let studentFormDiv = document.getElementById("studenttForm");
+           studentFormDiv.innerHTML = '';
+           let studentUpdateDiv = document.getElementById("updateForm");
+           studentUpdateDiv.innerHTML = " ";
+        }   
+        const onCreateStudent= async function(){
+            let studentForm=`
+                                <div class= "studentform">
+                                    <h1> Create Student</h1>
+                                    <label for="id"> ID: </label>
+                                    <input type="text" id="id"> <br><br> 
+                                    <label for="name"> Name: </label>
+                                    <input type="text" id="name"> <br><br>
+                                    <label for="age"> Age: </label>
+                                    <input type="text" id="age"> <br><br>
+                                    <input type="submit" value="Create" onclick="onCreateButtonClick()">
+                                </div>`;
+            let studentFormDiv = document.getElementById("studenttForm");
+           studentFormDiv.innerHTML = studentForm;
+           let studentDiv = document.getElementById("studentList");
+           studentDiv.innerHTML = " ";
+           let studentUpdateDiv = document.getElementById("updateForm");
+           studentUpdateDiv.innerHTML = " ";
+           
+        }
+
+        const onCreateButtonClick= async function(){
+              
+              let idEntered = document.getElementById("id").value;
+              let nameEntered=document.getElementById("name").value;
+              let ageEntered=document.getElementById("age").value;
+              let response = await fetch ("http://localhost:3333/api/student",{
+              method: "POST",
+              headers:{
+                  'Accept': 'application/json',
+                  "Content-Type":"application/json",
+              },
+              body: JSON.stringify({
+                  id:idEntered,
+                  name:nameEntered,
+                  age:ageEntered
+              })       
+             });
+             let body = await response.json()
+             console.log(body);
+          }   
+          const onEditStudent= async function(id){
+            let response = await fetch (`http://localhost:3333/api/student/${id}`,{
+            method: "GET",   
+           });
+           let body = await response.json()
+           console.log(body);
+            let studentUpdateForm=`
+                                <div class= "studentform">
+                                    <h1> Update Student</h1>
+                                    <label for="id"> ID: </label>
+                                    <input type="text" id="id" value="${body.id}"> <br><br> 
+                                    <label for="name"> Name: </label>
+                                    <input type="text" id="name" value="${body.name}"> <br><br>
+                                    <label for="age"> Age: </label>
+                                    <input type="text" id="age" value="${body.age}"> <br><br>
+                                    <input type="submit" value="Update" onclick="onUpdateButtonClick(${body.id})">
+                                </div>`;
+            let studentUpdateFormDiv = document.getElementById("updateForm");
+            studentUpdateFormDiv.innerHTML = studentUpdateForm;
+            let studentDiv = document.getElementById("studentList");
+           studentDiv.innerHTML = " ";
+           let studentFormDiv = document.getElementById("studenttForm");
+           studentFormDiv.innerHTML = '';
+          }   
+          const onUpdateButtonClick= async function(id){
+
+            let idEntered = document.getElementById("id").value;
+              let nameEntered=document.getElementById("name").value;
+              let ageEntered=document.getElementById("age").value;
+              let response = await fetch (`http://localhost:3333/api/student/${id}`,{
+              method: "PUT",
+              headers:{
+                  'Accept': 'application/json',
+                  "Content-Type":"application/json",
+              },
+              body: JSON.stringify({
+                  id:idEntered,
+                  name:nameEntered,
+                  age:ageEntered
+              })       
+             });
+             let body = await response.json()
+             console.log(body);
+             
+          }   
+          const onDeleteStudent= async function(id){
+            text="Are you sure you want to delete"
+            if(confirm(text)==true){
+                let response = await fetch (`http://localhost:3333/api/student/${id}`,{
+                method: "DELETE"
+                })
+                window.location = '/Users/nirjalamaharjan/Desktop/NPJ/jslearn/home.html';
+                let viewAllbutton=document.getElementById("viewButton");
+            }
+        }
+
+          
+    </script>
+
+</html>

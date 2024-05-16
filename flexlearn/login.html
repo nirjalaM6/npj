@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <style>
+            h1{
+                font-weight: 400;
+                color: blue;
+                align-items:center;
+                
+            }
+            .loginBox {
+                border: 5px solid;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                height: 40%;
+                width: 30%;
+                transform: translate(-50%, -50%);
+                padding: 10px;
+                text-align: center;
+                
+            }
+        </style>
+    </head>
+        <body>
+          
+            <div class="loginBox">
+                <h1>Login</h1><br>
+                
+                    <h4><label for="email"> Email: </label>
+                   <input type="text" id="email"> <br><br>
+                   <label for="password"> Password: </label>
+                   <input type="password" id="password"> <br><br>
+                   <input type="submit" value="Login" onclick="onLogInButtonClick()"></h4>
+
+                
+            </div>
+        </body>
+        <script >
+            
+            const onLogInButtonClick= async function(){
+              
+                let emailEntered = document.getElementById("email").value;
+                let passwordEntered=document.getElementById("password").value;
+                let response = await fetch ("http://localhost:3333/api/login",{
+                method: "POST",
+                headers:{
+                    'Accept': 'application/json',
+                    "Content-Type":"application/json",
+                },
+                body: JSON.stringify({
+                    email:emailEntered,
+                    password:passwordEntered
+                })       
+               });
+               
+               let body = await response.json()
+               if(body.message=="success"){
+                window.location = '/Users/nirjalamaharjan/Desktop/NPJ/jslearn/home.html';
+               }
+               else {
+                alert ("incorrect id or password")
+                return false;
+               }
+            
+            }   
+            
+        </script>
+</html>
